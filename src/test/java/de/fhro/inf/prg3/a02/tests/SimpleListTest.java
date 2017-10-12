@@ -1,6 +1,7 @@
 package de.fhro.inf.prg3.a02.tests;
 
 import de.fhro.inf.prg3.a02.SimpleFilter;
+import de.fhro.inf.prg3.a02.SimpleList;
 import de.fhro.inf.prg3.a02.SimpleListImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -58,11 +59,42 @@ public class SimpleListTest {
 	}
 
 	@Test
+	void testFilterrAnotherAnonymousClass() {
+		SimpleListImpl result = (SimpleListImpl)testList.filter(new SimpleFilter() {
+			private int count = 0;
+			@Override
+			public boolean include(Object item) {
+				count++;
+
+				if(count % 3 == 0)
+					return true;
+
+				return false;
+			}
+		});
+
+		for(Object o: result) {
+			int i = (int)o;
+			assertTrue(i % 3 == 0);
+		}
+	}
+
+	@Test
 	void testFilterLambda(){
 		SimpleListImpl result = (SimpleListImpl) testList.filter(o -> ((int)o) % 2 == 0);
 		for(Object o : result){
 			int i = (int)o;
 			assertTrue(i % 2 == 0);
 		}
+	}
+
+	@Test
+	void testAnotherLambda() {
+		SimpleListImpl result =(SimpleListImpl)testList.filter(o -> ((int) o < 4));
+		for(Object o : result){
+			int i = (int)o;
+			assertTrue(i < 4);
+		}
+
 	}
 }
